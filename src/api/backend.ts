@@ -27,9 +27,8 @@ const http = axios.create({
   timeout: 15_000,
 });
 
-// Instance riêng để lỗi refresh không tạo vòng lặp.
 const authHttp = axios.create({
-  baseURL: '/api/auth',
+  baseURL: `${baseURL}/auth`,
   timeout: 15_000,
   withCredentials: true,
 });
@@ -201,7 +200,7 @@ export const api = {
 
 export const auth = {
   async login(credentials: {
-    email: string;
+    username: string;
     password: string;
   }): Promise<void> {
     requireBrowser();

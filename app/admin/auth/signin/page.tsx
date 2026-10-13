@@ -34,9 +34,9 @@ import { auth } from "@/src/api/backend"
 import axios from "axios"
 
 const formSchema = z.object({
-  email: z
-    .string()
-    .email("Please enter a valid email address."),
+  username: z
+    .string(),
+    // .username("Please enter a valid username address."),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters.")
@@ -48,7 +48,7 @@ export default function AuthSignInAdminPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   })
@@ -92,18 +92,18 @@ export default function AuthSignInAdminPage() {
         <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
-              name="email"
+              name="username"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-email">
-                    Email
+                  <FieldLabel htmlFor="form-rhf-demo-username">
+                    username
                   </FieldLabel>
                   <Input
                     {...field}
-                    id="form-rhf-demo-email"
+                    id="form-rhf-demo-username"
                     aria-invalid={fieldState.invalid}
-                    placeholder="Enter your email"
+                    placeholder="Enter your username"
                     autoComplete="off"
                   />
                   {fieldState.invalid && (
