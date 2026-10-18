@@ -5,11 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 
 import { authApi, canAccessRoute, hasPermission } from "@/src/api/auth";
+import { AUTH, PATH } from "@/src/path";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 const routePermissions: Record<string, string | null> = {
   "/admin": null,
   "/admin/user": "user.findAll",
-  "/admin/user/new": "user.create",
+  "/admin/dashboard": "admin.dashboard",
 };
 
 type CheckState = {
@@ -36,7 +39,7 @@ export default function ProtectedLayout({
 
     async function verify() {
       if (!authApi.hasSession()) {
-        router.replace("/admin/login");
+        router.replace(AUTH.SIGNIN());
         return;
       }
 
@@ -47,12 +50,12 @@ export default function ProtectedLayout({
 
         // Mặc định từ chối route chưa khai báo.
         if (!Object.prototype.hasOwnProperty.call(routePermissions, pathname)) {
-          router.replace("/403");
+          router.replace(PATH.DASHBOARD.INDEX());
           return;
         }
 
         if (!canAccessRoute(user, pathname)) {
-          router.replace("/403");
+          router.replace(PATH.DASHBOARD.INDEX());
           return;
         }
 
@@ -68,12 +71,12 @@ export default function ProtectedLayout({
           : undefined;
 
         if (status === 401) {
-          router.replace("/admin/login");
+          router.replace(AUTH.SIGNIN());
           return;
         }
 
         if (status === 403) {
-          router.replace("/403");
+          router.replace(PATH.DASHBOARD.INDEX());
           return;
         }
 
@@ -105,5 +108,11 @@ export default function ProtectedLayout({
     return <div>Đang xác thực phiên...</div>;
   }
 
-  return <>{children}</>;
+  return <><SidebarProvider>
+          <AppSidebar />
+          <main>
+            <SidebarTrigger />
+            {children}
+          </main>
+        </SidebarProvider></>;
 }

@@ -1,5 +1,5 @@
-const DashboardPage = () => {
-    
-    return <>sdsd</>
+export default function Page() {
+  return (
+    <>sdsd</>
+  )
 }
-export default DashboardPage

@@ -1,7 +1,9 @@
 // src/lib/api/auth.ts
+import { PATH } from '../path';
 import { clearTokens, getTokens, setTokens, type AuthTokens } from './config';
 import { privateApi, refreshAccessToken } from './private';
 import { publicApi } from './public';
+
 
 export interface LoginInput {
   username: string;
@@ -76,8 +78,8 @@ export function hasPermission(user: AuthUser, permission: string): boolean {
 
 /** Ví dụ với permission thực tế của Sale: user.findAll. */
 export function getLandingRoute(user: AuthUser): string {
-  if (hasPermission(user, 'user.findAll')) return '/admin/user';
-  return '/dashboard'; // Trang chỉ yêu cầu đăng nhập, không hiển thị dữ liệu trái quyền.
+  if (hasPermission(user, 'user.findAll')) return PATH.USER.INDEX();
+  return PATH.DASHBOARD.INDEX(); // Trang chỉ yêu cầu đăng nhập, không hiển thị dữ liệu trái quyền.
 }
 
 export const authApi = {

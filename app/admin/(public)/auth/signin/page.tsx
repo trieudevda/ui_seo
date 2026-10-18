@@ -30,6 +30,7 @@ import {
   authApi,
   getLandingRoute,
 } from "@/src/api/auth";
+import { PATH } from "@/src/path";
 
 // Schema tương ứng LoginDto NestJS
 const formSchema = z.object({
@@ -105,7 +106,7 @@ export default function AuthSignInAdminPage() {
         }
 
         if (httpStatus === 403) {
-          router.replace("/403");
+          router.replace(PATH.DASHBOARD.INDEX());
           return;
         }
 
