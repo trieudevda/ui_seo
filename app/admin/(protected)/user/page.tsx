@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UsersAdmin } from "./_userAdmin";
-// import { UsersAdmin } from "@/components/admin/users-admin";
 
 export default function UserListPage() {
   return (

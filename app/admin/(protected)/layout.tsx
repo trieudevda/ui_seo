@@ -110,7 +110,7 @@ export default function ProtectedLayout({
 
   return <><SidebarProvider>
           <AppSidebar />
-          <main>
+          <main className="mw-screen overflow-auto">
             <SidebarTrigger />
             {children}
           </main>
