@@ -1,0 +1,31 @@
+{
+  "Users": {
+    "title": "Users",
+    "description": "Manage accounts, verification and access permissions.",
+    "name": "Name",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "status": "Status",
+    "created": "Created",
+    "actions": "Actions",
+    "edit": "Edit",
+    "disable": "Disable",
+    "refresh": "Refresh users",
+    "searchPlaceholder": "Search name, username, email...",
+    "noUsers": "No users found.",
+    "verified": "Verified",
+    "unverified": "Not verified",
+    "unknown": "No data available",
+    "editTitle": "Edit user",
+    "disableTitle": "Disable account?",
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "saveSuccess": "User updated successfully.",
+    "disableSuccess": "User disabled successfully.",
+    "loadError": "Unable to load users.",
+    "sortNotSupported": "The backend does not support sorting this column.",
+    "total": "Total: {count} users"
+  }
+}

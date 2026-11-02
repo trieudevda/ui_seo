@@ -25,11 +25,13 @@ export type User = {
   phone: string | null;
   address?: string | null;
   status: UserStatus;
-  roleAssignments: Role[];
+  roleAssignments?: Role[] | null;
+  parentId?: string | null;
   emailVerifiedAt?: string | null;
   phoneVerifiedAt?: string | null;
   createdAt?: string;
   updatedAt?: string;
+  createdBy?: string | null;  
 };
 
 // Pagination

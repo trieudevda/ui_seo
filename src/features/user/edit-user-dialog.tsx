@@ -29,6 +29,7 @@ import type {
 
 import { readableError } from "./user.helpers";
 import { STATUSADMIN } from "@/lib/constants/status.constant";
+import { useTranslations } from "next-intl";
 
 type EditUserDialogProps = {
   userId: string | null;
@@ -53,6 +54,7 @@ export function EditUserDialog({
   onClose,
   onSuccess,
 }: EditUserDialogProps) {
+  const t = useTranslations("Users");
   const [editUser, setEditUser] =
     React.useState<User | null>(null);
 
@@ -87,7 +89,7 @@ export function EditUserDialog({
 
         if (!isUser(user) || user.id !== userId) {
           throw new Error(
-            "GET /users/:id chưa trả về User chi tiết hợp lệ",
+            t('noUsers')
           );
         }
 
@@ -104,7 +106,7 @@ export function EditUserDialog({
         toast.error(
           readableError(
             err,
-            "Không lấy được thông tin người dùng. Kiểm tra GET /users/:id.",
+            t('noUsers')
           ),
         );
       } finally {
@@ -138,34 +140,29 @@ export function EditUserDialog({
     const username = editForm.username.trim();
 
     if (!username || username.length > 100) {
-      return toast.error("Username phải có 1–100 ký tự.");
+      return toast.error(t('usernameLength'));
     }
 
     if (
       editForm.email &&
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editForm.email)
     ) {
-      return toast.error("Email không hợp lệ.");
+      return toast.error(t('invalidEmail'));
     }
 
     if (
       editForm.phone &&
       !/^\+?[0-9]{9,20}$/.test(editForm.phone)
     ) {
-      return toast.error("Số điện thoại không hợp lệ.");
+      return toast.error(t('invalidPhone'));
     }
 
     setSaving(true);
 
     try {
-      // Không gửi password, roles, verification.
       const payload = {
-        username,
         firstName: editForm.firstName.trim(),
         lastName: editForm.lastName.trim(),
-
-        // DTO hiện tại không hỗ trợ xóa email/phone
-        // bằng chuỗi rỗng.
         ...(editForm.email.trim()
           ? { email: editForm.email.trim() }
           : {}),
@@ -175,32 +172,31 @@ export function EditUserDialog({
           : {}),
 
         address: editForm.address.trim(),
-        status: editForm.status,
+        // status: editForm.status,
       };
 
       const updated = await privateApi.patch<User>(
         `/users/${encodeURIComponent(editUser.id)}`,
         payload,
       );
-
       if (
         !isUser(updated) ||
         updated.id !== editUser.id
       ) {
         throw new Error(
-          "PATCH /users/:id chưa trả về User đã cập nhật; không xác nhận thành công.",
+          t('saveError')
         );
       }
 
-      toast.success("Đã cập nhật người dùng.");
+      toast.success(t('saveSuccess'));
 
       onClose();
       onSuccess();
-    } catch (err) {
+    } catch (err) {console.log(err)
       toast.error(
         readableError(
           err,
-          "Cập nhật thất bại hoặc backend chưa triển khai PATCH.",
+          t('saveError'),
         ),
       );
     } finally {
@@ -220,13 +216,8 @@ export function EditUserDialog({
       <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-2xl sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
-            Edit user
+            {t('editTitle')}
           </DialogTitle>
-
-          <DialogDescription className="font-light">
-            Dữ liệu được tải lại từ GET /api/users/:id
-            trước khi chỉnh sửa.
-          </DialogDescription>
         </DialogHeader>
 
         {editLoading ? (
@@ -240,9 +231,7 @@ export function EditUserDialog({
           </div>
         ) : !editForm ? (
           <p className="text-sm font-light">
-            Không tải được dữ liệu chi tiết. Đóng và
-            thử lại sau khi backend đã hỗ trợ
-            GET /users/:id.
+            {t('noUsersDetail')}
           </p>
         ) : (
           <form
@@ -252,12 +241,12 @@ export function EditUserDialog({
           >
             {(
               [
-                ["username", "Username"],
-                ["firstName", "First name"],
-                ["lastName", "Last name"],
-                ["email", "Email"],
-                ["phone", "Phone"],
-                ["address", "Address"],
+                ["username", t('username')],
+                ["firstName", t('firstName')],
+                ["lastName", t('lastName')],
+                ["email", t('email')],
+                ["phone", t('phone')],
+                ["address", t('address')],
               ] as const
             ).map(([key, label]) => (
               <label
@@ -286,7 +275,7 @@ export function EditUserDialog({
             ))}
 
             <label className="space-y-1 text-xs font-normal">
-              <span>Status</span>
+              <span>{t('status')}</span>
 
               <select
                 value={editForm.status}
@@ -309,7 +298,7 @@ export function EditUserDialog({
               {editUser?.roleAssignments
                 .map((r) => r.name)
                 .join(", ") || "—"}{" "}
-              (read-only)
+              ({t('read-only')})
             </div>
           </form>
         )}
@@ -321,7 +310,7 @@ export function EditUserDialog({
             disabled={saving}
             onClick={onClose}
           >
-            Cancel
+            {t('cancel')}
           </Button>
 
           <Button
@@ -338,7 +327,7 @@ export function EditUserDialog({
               <LoaderCircle className="size-4 animate-spin" />
             ) : null}
 
-            Save changes
+            {t('save')}
           </Button>
         </DialogFooter>
       </DialogContent>

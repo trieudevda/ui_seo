@@ -43,11 +43,11 @@ type Column = {
 
 const COLUMNS: Column[] = [
   { label: "Name", field: "name", width: "min-w-44" },
-  { label: "Username", field: "username", width: "min-w-36" },
+  // { label: "Username", field: "username", width: "min-w-36" },
   { label: "Email", field: "email", width: "min-w-56" },
   { label: "Phone", field: "phone", width: "min-w-36" },
-  { label: "Email verified", field: "emailVerified", width: "min-w-32" },
-  { label: "Phone verified", field: "phoneVerified", width: "min-w-32" },
+  // { label: "Email verified", field: "emailVerified", width: "min-w-32" },
+  // { label: "Phone verified", field: "phoneVerified", width: "min-w-32" },
   { label: "Role", field: "role", width: "min-w-36" },
   { label: "Status", field: "status", width: "min-w-28" },
   { label: "Created", field: "created", width: "min-w-32" },
@@ -105,7 +105,7 @@ function Verification({
   const unknown = value === undefined;
 
   const text = unknown
-    ? "Backend chưa trả trạng thái"
+    ? "Chưa xác định"
     : verified
       ? "Đã xác minh"
       : "Chưa xác minh";
@@ -284,25 +284,37 @@ export function UsersTable({
                   {fullName(user)}
                 </TableCell>
 
-                <TableCell
+                {/* <TableCell
                   className="max-w-44 truncate border-r border-neutral-100"
                   title={user.username}
                 >
                   {user.username}
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell
                   className="max-w-60 truncate border-r border-neutral-100"
                   title={user.email ?? ""}
                 >
                   {user.email ?? "—"}
+                  {user.email && (
+      <Verification
+        label="Email"
+        value={user.emailVerifiedAt}
+      />
+    )}
                 </TableCell>
 
                 <TableCell className="border-r border-neutral-100">
                   {user.phone ?? "—"}
+                  {user.phone && (
+      <Verification
+        label="Phone"
+        value={user.phoneVerifiedAt}
+      />
+    )}
                 </TableCell>
 
-                <TableCell className="border-r border-neutral-100 text-center">
+                {/* <TableCell className="border-r border-neutral-100 text-center">
                   <Verification
                     label="Email"
                     value={user.emailVerifiedAt}
@@ -314,13 +326,13 @@ export function UsersTable({
                     label="Điện thoại"
                     value={user.phoneVerifiedAt}
                   />
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell
                   className="max-w-44 truncate border-r border-neutral-100"
-                  title={user.roles.map((r) => r.name).join(", ")}
+                  title={user.roleAssignments?.map((r) => r.name).join(", ")}
                 >
-                  {user.roles.map((r) => r.name).join(", ") || "—"}
+                  {user.roleAssignments?.map((r) => r.name).join(", ") || "—"}
                 </TableCell>
 
                 <TableCell className="border-r border-neutral-100 capitalize">

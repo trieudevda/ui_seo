@@ -23,6 +23,7 @@ import type {
 } from "./user.types";
 
 import { readableError } from "./user.helpers";
+import { useTranslations } from "next-intl";
 
 type DisableUserDialogProps = {
   user: User | null;
@@ -37,6 +38,7 @@ export function DisableUserDialog({
 }: DisableUserDialogProps) {
   const [deleting, setDeleting] =
     React.useState(false);
+    const t = useTranslations("Users");
 
   async function disableUser() {
     if (!user || deleting) return;
@@ -44,7 +46,6 @@ export function DisableUserDialog({
     setDeleting(true);
 
     try {
-      // Backend DELETE thực hiện soft-disable.
       const result = await privateApi.delete<{
         id: string;
         status: UserStatus;
@@ -57,11 +58,11 @@ export function DisableUserDialog({
         result.status !== "inactive"
       ) {
         throw new Error(
-          "DELETE /users/:id chưa trả về xác nhận vô hiệu hóa hợp lệ.",
+          t('disableError')
         );
       }
 
-      toast.success("Đã vô hiệu hóa người dùng.");
+      toast.success(t('disableSuccess'));
 
       onClose();
       onSuccess();
@@ -69,7 +70,7 @@ export function DisableUserDialog({
       toast.error(
         readableError(
           err,
-          "Thao tác thất bại hoặc backend chưa hỗ trợ DELETE.",
+          t('disableError'),
         ),
       );
     } finally {
@@ -89,13 +90,11 @@ export function DisableUserDialog({
       <AlertDialogContent className="rounded-2xl">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-lg font-bold">
-            Vô hiệu hóa tài khoản?
+            {t('disableUserTitle')}
           </AlertDialogTitle>
 
           <AlertDialogDescription className="font-light">
-            Tài khoản {user?.username} sẽ chuyển sang
-            inactive và không thể đăng nhập. Đây là
-            soft-delete, không xóa dữ liệu lịch sử.
+            {t('disableDescription', { username: user?.username ?? '' })}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -106,7 +105,7 @@ export function DisableUserDialog({
             className="font-normal"
             onClick={onClose}
           >
-            Cancel
+            {t('cancel')}
           </Button>
 
           <Button
@@ -120,7 +119,7 @@ export function DisableUserDialog({
               <Trash2 className="size-4" />
             )}
 
-            Confirm
+            {t('confirm')}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

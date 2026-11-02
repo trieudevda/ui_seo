@@ -28,6 +28,7 @@ import { IconTip, UsersTable } from "@/src/features/user/users-table";
 import { EditUserDialog } from "@/src/features/user/edit-user-dialog";
 import { DisableUserDialog } from "@/src/features/user/disable-user-dialog";
 import {STATUSADMIN} from "@/lib/constants/status.constant";
+import { useTranslations } from "next-intl";
 
 const textWeight = "font-normal";
 
@@ -48,6 +49,7 @@ export function UsersAdmin() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations("Users");
 
   const queryString = searchParams.toString();
 
@@ -264,30 +266,12 @@ export function UsersAdmin() {
         <header className="flex shrink-0 items-center justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Users
+              {t("title")}
             </h1>
             <p className="mt-0.5 text-sm font-light text-neutral-500">
-              Manage accounts, verification and access permissions.
+              {t("description")}
             </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="hidden rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm font-normal sm:block">
-              {loading && !data
-                ? "Đang tải..."
-                : `${pagination?.total ?? 0} users`}
-            </span>
-            <IconTip
-              label="Làm mới danh sách"
-              onClick={reload}
-              disabled={loading}
-            >
-              <RotateCw
-                className={`size-4 ${
-                  loading ? "animate-spin" : ""
-                }`}
-              />
-            </IconTip>
-          </div>
+          </div>          
         </header>
         {/* Search, Status, Role ID */}
         <div className="flex shrink-0 flex-wrap items-center gap-2 rounded-xl border border-neutral-200 bg-white p-2.5 shadow-sm">
@@ -298,8 +282,8 @@ export function UsersAdmin() {
               onChange={(e) =>
                 setSearchInput(e.target.value)
               }
-              placeholder="Search name, username, email..."
-              aria-label="Tìm kiếm người dùng"
+              placeholder={t("searchPlaceholder")}
+              aria-label={t("searchPlaceholder")}
               className="h-9 rounded-lg pl-9 font-normal"
             />
           </div>
@@ -333,14 +317,11 @@ export function UsersAdmin() {
             aria-label="Role ID"
             className="h-9 w-25 rounded-lg font-normal"
           />
-          <span className="hidden text-xs font-light text-neutral-500 lg:block">
-            Click column headers to sort
-          </span>
         </div>
         {/* Table + Pagination */}
         <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
           <UsersTable
-            users={data?.items}
+            users={data?.items ?? []}
             loading={loading}
             error={error}
             sort={sort}
@@ -350,18 +331,18 @@ export function UsersAdmin() {
           />
           <footer className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-neutral-200 bg-white px-3 py-3">
             <span className="text-sm font-normal text-neutral-600">
-              Total: {pagination?.total ?? 0} users
+              {t("totalUsers", { count: pagination?.total ?? 0 })}
             </span>
             <div className="flex items-center gap-2">
               <label
                 htmlFor="users-page-limit"
                 className="text-xs font-light text-neutral-500"
               >
-                Rows
+                {t("rowsPerPage")}
               </label>
               <select
                 id="users-page-limit"
-                aria-label="Rows per page"
+                aria-label={t("rowsPerPage")}
                 value={limit}
                 className="h-8 rounded-lg border border-neutral-200 bg-white px-2 text-sm font-normal"
                 onChange={(e) =>
