@@ -32,6 +32,7 @@ import {
 
 import { SORTADMIN } from "@/lib/constants/sort.constant";
 import type { User, SortKey } from "./user.types";
+import { useTranslations } from "next-intl";
 
 type SortField = keyof typeof SORTADMIN.USER;
 
@@ -42,16 +43,16 @@ type Column = {
 };
 
 const COLUMNS: Column[] = [
-  { label: "Name", field: "name", width: "min-w-44" },
+  { label: "name", field: "name", width: "min-w-44" },
   // { label: "Username", field: "username", width: "min-w-36" },
-  { label: "Email", field: "email", width: "min-w-56" },
-  { label: "Phone", field: "phone", width: "min-w-36" },
+  { label: "email", field: "email", width: "min-w-56" },
+  { label: "phone", field: "phone", width: "min-w-36" },
   // { label: "Email verified", field: "emailVerified", width: "min-w-32" },
   // { label: "Phone verified", field: "phoneVerified", width: "min-w-32" },
-  { label: "Role", field: "role", width: "min-w-36" },
-  { label: "Status", field: "status", width: "min-w-28" },
-  { label: "Created", field: "created", width: "min-w-32" },
-  { label: "Action", width: "w-24" },
+  { label: "role", field: "role", width: "min-w-36" },
+  { label: "status", field: "status", width: "min-w-28" },
+  { label: "created", field: "created", width: "min-w-32" },
+  { label: "action", width: "w-24" },
 ];
 
 type IconTipProps = {
@@ -142,7 +143,8 @@ function SortButton({
   field: SortField;
   sort: SortKey;
   onSort: (field: SortField) => void;
-}) {
+}) {  
+  const t = useTranslations("Users");
   const [asc, desc] = SORTADMIN.USER[field];
   const current = sort === asc || sort === desc;
 
@@ -153,8 +155,8 @@ function SortButton({
           <button
             type="button"
             onClick={() => onSort(field)}
-            aria-label={`Sắp xếp ${label}: ${
-              sort === asc ? "giảm dần" : "tăng dần"
+            aria-label={`${t('sort')} ${label}: ${
+              sort === asc ? t('sortAscending') : t('sortDescending')
             }`}
             aria-pressed={current}
             className="inline-flex w-full items-center justify-between gap-2 rounded-md px-1 py-2 text-left font-normal hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-neutral-900"
@@ -171,9 +173,8 @@ function SortButton({
           </button>
         }
       />
-
       <TooltipContent>
-        Bấm để sắp xếp tăng / giảm trên toàn bộ kết quả
+        {t('sortTooltip')}
       </TooltipContent>
     </Tooltip>
   );
@@ -224,6 +225,8 @@ export function UsersTable({
   onEdit,
   onDisable,
 }: UsersTableProps) {
+  
+  const t = useTranslations("Users");
   return (
     <div className="min-h-0 min-w-0 flex-1 overflow-auto [scrollbar-gutter:stable] [&_[data-slot=table-container]]:overflow-visible">
       <Table className="min-w-[1340px] border-separate border-spacing-0 text-sm font-normal">
@@ -238,12 +241,12 @@ export function UsersTable({
                 {column.field ? (
                   <SortButton
                     field={column.field}
-                    label={column.label}
+                    label={t(column.label)}
                     sort={sort}
                     onSort={onSort}
                   />
                 ) : (
-                  <span className="px-1">{column.label}</span>
+                  <span className="px-1">{t(column.label)}</span>
                 )}
               </TableHead>
             ))}
@@ -259,7 +262,7 @@ export function UsersTable({
                 colSpan={COLUMNS.length}
                 className="h-36 text-center font-light text-neutral-600"
               >
-                {error}
+                {t('error')}
               </TableCell>
             </TableRow>
           ) : users.length === 0 ? (
@@ -268,7 +271,7 @@ export function UsersTable({
                 colSpan={COLUMNS.length}
                 className="h-36 text-center font-light text-neutral-500"
               >
-                Không tìm thấy người dùng.
+                {t('noUsers')}
               </TableCell>
             </TableRow>
           ) : (
@@ -348,14 +351,14 @@ export function UsersTable({
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     <IconTip
-                      label={`Sửa ${user.username}`}
+                      label={t('editTooltip',{ username: user.username })}
                       onClick={() => onEdit(user.id)}
                     >
                       <Pencil className="size-4" />
                     </IconTip>
 
                     <IconTip
-                      label={`Vô hiệu hóa ${user.username}`}
+                      label={t('disableUserTitle')}
                       onClick={() => onDisable(user)}
                       destructive
                     >

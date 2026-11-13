@@ -44,6 +44,13 @@
     "disableUserTitle": "Vô hiệu hóa người dùng",
     "disableUserDescription": "Bạn có chắc chắn muốn vô hiệu hóa người dùng này?",
     "rowsPerPage": "Số hàng mỗi trang",
-    "page": "Trang"
+    "page": "Trang",
+    "sort": "Sắp xếp",
+    "sortDescending": "Sắp xếp giảm dần",
+    "sortAscending": "Sắp xếp tăng dần",
+    "sortTooltip": "Bấm để sắp xếp tăng / giảm trên toàn bộ kết quả",
+    "editTooltip":"Sửa {username}",
+    "error": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "action":"Hành động"
   }
 }

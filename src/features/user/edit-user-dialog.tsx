@@ -295,7 +295,7 @@ export function EditUserDialog({
 
             <div className="self-end text-xs font-light text-neutral-500">
               Roles:{" "}
-              {editUser?.roleAssignments
+              {editUser?.roleAssignments && editUser?.roleAssignments
                 .map((r) => r.name)
                 .join(", ") || "—"}{" "}
               ({t('read-only')})
