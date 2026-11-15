@@ -44,11 +44,8 @@ type Column = {
 
 const COLUMNS: Column[] = [
   { label: "name", field: "name", width: "min-w-44" },
-  // { label: "Username", field: "username", width: "min-w-36" },
   { label: "email", field: "email", width: "min-w-56" },
   { label: "phone", field: "phone", width: "min-w-36" },
-  // { label: "Email verified", field: "emailVerified", width: "min-w-32" },
-  // { label: "Phone verified", field: "phoneVerified", width: "min-w-32" },
   { label: "role", field: "role", width: "min-w-36" },
   { label: "status", field: "status", width: "min-w-28" },
   { label: "created", field: "created", width: "min-w-32" },
@@ -79,9 +76,8 @@ export function IconTip({
             type="button"
             variant="ghost"
             size="icon"
-            className={`size-8 rounded-lg font-normal ${
-              destructive ? "hover:bg-red-50 hover:text-red-700" : ""
-            }`}
+            className={`size-8 rounded-lg font-normal ${destructive ? "hover:bg-red-50 hover:text-red-700" : ""
+              }`}
             aria-label={label}
             disabled={disabled}
             onClick={onClick}
@@ -143,7 +139,7 @@ function SortButton({
   field: SortField;
   sort: SortKey;
   onSort: (field: SortField) => void;
-}) {  
+}) {
   const t = useTranslations("Users");
   const [asc, desc] = SORTADMIN.USER[field];
   const current = sort === asc || sort === desc;
@@ -155,9 +151,8 @@ function SortButton({
           <button
             type="button"
             onClick={() => onSort(field)}
-            aria-label={`${t('sort')} ${label}: ${
-              sort === asc ? t('sortAscending') : t('sortDescending')
-            }`}
+            aria-label={`${t('sort')} ${label}: ${sort === asc ? t('sortAscending') : t('sortDescending')
+              }`}
             aria-pressed={current}
             className="inline-flex w-full items-center justify-between gap-2 rounded-md px-1 py-2 text-left font-normal hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-neutral-900"
           >
@@ -225,7 +220,7 @@ export function UsersTable({
   onEdit,
   onDisable,
 }: UsersTableProps) {
-  
+
   const t = useTranslations("Users");
   return (
     <div className="min-h-0 min-w-0 flex-1 overflow-auto [scrollbar-gutter:stable] [&_[data-slot=table-container]]:overflow-visible">
@@ -300,21 +295,21 @@ export function UsersTable({
                 >
                   {user.email ?? "—"}
                   {user.email && (
-      <Verification
-        label="Email"
-        value={user.emailVerifiedAt}
-      />
-    )}
+                    <Verification
+                      label="Email"
+                      value={user.emailVerifiedAt}
+                    />
+                  )}
                 </TableCell>
 
                 <TableCell className="border-r border-neutral-100">
                   {user.phone ?? "—"}
                   {user.phone && (
-      <Verification
-        label="Phone"
-        value={user.phoneVerifiedAt}
-      />
-    )}
+                    <Verification
+                      label="Phone"
+                      value={user.phoneVerifiedAt}
+                    />
+                  )}
                 </TableCell>
 
                 {/* <TableCell className="border-r border-neutral-100 text-center">
@@ -351,7 +346,7 @@ export function UsersTable({
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     <IconTip
-                      label={t('editTooltip',{ username: user.username })}
+                      label={t('editTooltip', { username: user.username })}
                       onClick={() => onEdit(user.id)}
                     >
                       <Pencil className="size-4" />
