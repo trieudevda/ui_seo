@@ -32,11 +32,10 @@ import { useTranslations } from "next-intl";
 
 const textWeight = "font-normal";
 
-const ALL_SORTS =
-  Object.values(SORTADMIN.USER).flat() as SortKey[];
+const ALL_SORTS = Object.values(SORTADMIN.USER).flat() as SortKey[];
 
 // Chỉ bật khi backend hỗ trợ đầy đủ sort mở rộng.
-const ENABLE_EXTENDED_SORT = false;
+const ENABLE_EXTENDED_SORT = true;
 
 const BACKEND_SORT_FIELDS =
   new Set<keyof typeof SORTADMIN.USER>([
@@ -63,12 +62,22 @@ export function UsersAdmin() {
     (
       ENABLE_EXTENDED_SORT ||
       [
-        "newest",
-        "oldest",
-        "username_asc",
-        "username_desc",
-        "name_asc",
-        "name_desc",
+        'newest',
+      'oldest',
+      'username_asc',
+      'username_desc',
+      'name_asc',
+      'name_desc',
+      'email_asc',
+      'email_desc',
+      'phone_asc',
+      'phone_desc',
+      'createdAt_asc',
+      'createdAt_desc',
+      'updatedAt_asc',
+      'updatedAt_desc',
+      'status_asc',
+      'status_desc',
       ].includes(rawSort ?? "")
     );
 

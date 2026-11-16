@@ -46,9 +46,12 @@ const COLUMNS: Column[] = [
   { label: "name", field: "name", width: "min-w-44" },
   { label: "email", field: "email", width: "min-w-56" },
   { label: "phone", field: "phone", width: "min-w-36" },
+  { label: "address", field: "address", width: "min-w-60" },
   { label: "role", field: "role", width: "min-w-36" },
   { label: "status", field: "status", width: "min-w-28" },
   { label: "created", field: "created", width: "min-w-32" },
+  { label: "updated", field: "updated", width: "min-w-32" },
+  { label: "createdBy", field: "createdBy", width: "min-w-32" },
   { label: "action", width: "w-24" },
 ];
 
@@ -235,7 +238,7 @@ export function UsersTable({
               >
                 {column.field ? (
                   <SortButton
-                    field={column.field}
+                    field={column.field??''}
                     label={t(column.label)}
                     sort={sort}
                     onSort={onSort}
